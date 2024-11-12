@@ -1,0 +1,46 @@
+SET 6
+1>write a program for implementation of ORPHAN PROCESS  using c++
+
+#include <iostream>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid > 0) {
+        // Parent process
+        std::cout << "Parent process (PID: " << getpid() << ") is exiting.\n";
+        exit(0);  // Parent exits immediately
+    }
+    else if (pid == 0) {
+        // Child process
+        sleep(2);  // Sleep to allow the parent to exit first
+        std::cout << "Child process (PID: " << getpid() << ") is now an orphan.\n";
+        std::cout << "Child process's new parent PID: " << getppid() << "\n";  // Should show '1' (init process) as the parent
+    }
+    else {
+        // fork() failed
+        std::cerr << "Fork failed!\n";
+        return 1;
+    }
+
+    return 0;
+}
+2>FACTORIAL
+#!/bin/bash
+
+echo "Enter a number:"
+read num
+
+factorial=1
+counter=1
+
+while [ $counter -le $num ]
+do
+    factorial=$((factorial * counter))
+    counter=$((counter + 1))
+done
+
+echo "The factorial of $num is $factorial"
