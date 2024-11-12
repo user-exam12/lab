@@ -71,3 +71,32 @@ int main() {
     print_table(processes, n);
 
     return 0
+
+
+2>
+#!/bin/bash
+
+# Function to calculate factorial
+factorial() {
+    local num=$1
+    local fact=1
+
+    # Loop to calculate factorial
+    for ((i=1; i<=num; i++))
+    do
+        fact=$((fact * i))
+    done
+
+    echo $fact
+}
+
+# Prompt user for input
+read -p "Enter a number: " number
+
+# Check if the input is a non-negative integer
+if [[ $number =~ ^[0-9]+$ ]]; then
+    result=$(factorial $number)
+    echo "Factorial of $number is: $result"
+else
+    echo "Please enter a non-negative integer."
+fi
