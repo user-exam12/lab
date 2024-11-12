@@ -1,0 +1,13 @@
+1> multiplication table
+
+echo "Enter a number: "
+read number
+
+for i in {1..10}
+do
+    result=$((number * i))
+    echo "$number * $i = $result"
+done
+
+2>command line argument 
+
