@@ -1,0 +1,86 @@
+SET7
+1>write a program for implementing of zombie process in c++
+#include <iostream>
+#include <unistd.h>  // For fork() and sleep()
+#include <sys/types.h>
+#include <sys/wait.h>  // For wait()
+
+using namespace std;
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Error in fork
+        cerr << "Fork failed!" << endl;
+        return 1;
+    }
+    else if (pid == 0) {
+        // Child process
+        cout << "Child process: PID = " << getpid() << ", Parent PID = " << getppid() << endl;
+        // Simulate some work
+        sleep(2);  // The child will exit after 2 seconds
+        cout << "Child process terminating" << endl;
+        return 0;
+    }
+    else {
+        // Parent process
+        cout << "Parent process: PID = " << getpid() << ", Child PID = " << pid << endl;
+        cout << "Parent not calling wait() yet, child will become a zombie" << endl;
+        
+        // Let the child process terminate and become a zombie
+        sleep(5);  // Give the child process time to terminate and become a zombie
+        
+        // Now the parent will call wait() to clean up the zombie
+        int status;
+        waitpid(pid, &status, 0);
+        cout << "Parent calling wait() to clean up zombie process" << endl;
+        
+        return 0;
+    }
+}
+
+   
+2>write a program for switch case to input the bank account information of 3 person using shell programming
+
+#!/bin/bash
+
+# Function to input bank account information
+input_account_info() {
+    echo "Enter Account Number for Person $1:"
+    read account_number
+    echo "Enter Name for Person $1:"
+    read name
+    echo "Enter Balance for Person $1:"
+    read balance
+    echo "Account Number: $account_number, Name: $name, Balance: $balance"
+}
+
+# Menu to select which person's information to input
+echo "Choose an option to input bank account information:"
+echo "1) Person 1"
+echo "2) Person 2"
+echo "3) Person 3"
+echo "4) Exit"
+read choice
+
+case $choice in
+    1)
+        echo "Entering information for Person 1"
+        input_account_info 1
+        ;;
+    2)
+        echo "Entering information for Person 2"
+        input_account_info 2
+        ;;
+    3)
+        echo "Entering information for Person 3"
+        input_account_info 3
+        ;;
+    4)
+        echo "Exiting..."
+        ;;
+    *)
+        echo "Invalid choice. Please select a valid option."
+        ;;
+esac
