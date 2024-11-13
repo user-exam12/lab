@@ -1,102 +1,105 @@
+1>c program for FCFS CPU scheduling algorthim
+
 #include <stdio.h>
 
+// Structure to represent a process
 struct Process {
-    int pid;         // Process ID
-    int arrival_time;  // Arrival time
-    int burst_time;   // Burst time
-    int waiting_time;  // Waiting time
-    int turnaround_time; // Turnaround time
+    int id;
+    int arrival_time;
+    int burst_time;
+    int waiting_time;
+    int turnaround_time;
 };
 
-void calculate_times(struct Process processes[], int n) {
-    int current_time = 0;
+// Function to calculate waiting time and turnaround time for each process
+void calculateTimes(struct Process processes[], int n) {
+    int total_waiting_time = 0, total_turnaround_time = 0;
+    int completion_time = 0;
     
-    // Calculate waiting and turnaround times for each process
     for (int i = 0; i < n; i++) {
-        // Waiting time = current time - arrival time
-        processes[i].waiting_time = current_time - processes[i].arrival_time;
-
-        // Ensure the waiting time is not negative
-        if (processes[i].waiting_time < 0) {
-            processes[i].waiting_time = 0;
-            current_time = processes[i].arrival_time; // Adjust current time if process arrives later
+        // Calculate waiting time
+        if (completion_time < processes[i].arrival_time) {
+            completion_time = processes[i].arrival_time;
         }
-
-        // Turnaround time = waiting time + burst time
+        processes[i].waiting_time = completion_time - processes[i].arrival_time;
+        completion_time += processes[i].burst_time;
+        
+        // Calculate turnaround time
         processes[i].turnaround_time = processes[i].waiting_time + processes[i].burst_time;
-
-        // Update current time
-        current_time += processes[i].burst_time;
-    }
-}
-
-void print_table(struct Process processes[], int n) {
-    float total_waiting_time = 0;
-    float total_turnaround_time = 0;
-
-    printf("PID\tArrival\tBurst\tWaiting\tTurnaround\n");
-    printf("------------------------------------------------\n");
-
-    for (int i = 0; i < n; i++) {
-        printf("%d\t%d\t%d\t%d\t%d\n", processes[i].pid, processes[i].arrival_time,
-               processes[i].burst_time, processes[i].waiting_time, processes[i].turnaround_time);
+        
+        // Add to total times for calculating average
         total_waiting_time += processes[i].waiting_time;
         total_turnaround_time += processes[i].turnaround_time;
     }
 
-    printf("\nAverage Waiting Time: %.2f\n", total_waiting_time / n);
-    printf("Average Turnaround Time: %.2f\n", total_turnaround_time / n);
+    // Print results
+    printf("Process\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n");
+    for (int i = 0; i < n; i++) {
+        printf("P%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            processes[i].id,
+            processes[i].arrival_time,
+            processes[i].burst_time,
+            processes[i].waiting_time,
+            processes[i].turnaround_time);
+    }
+
+    // Print average waiting and turnaround times
+    printf("\nAverage Waiting Time: %.2f\n", (float)total_waiting_time / n);
+    printf("Average Turnaround Time: %.2f\n", (float)total_turnaround_time / n);
 }
 
 int main() {
     int n;
 
-    // Prompt for number of processes
+    // Input number of processes
     printf("Enter the number of processes: ");
     scanf("%d", &n);
 
     struct Process processes[n];
 
-    // Input process details
+    // Input arrival time and burst time for each process
     for (int i = 0; i < n; i++) {
-        processes[i].pid = i + 1;
-        printf("Enter arrival time and burst time for process %d: ", processes[i].pid);
+        processes[i].id = i + 1;
+        printf("Enter arrival time and burst time for Process P%d: ", processes[i].id);
         scanf("%d %d", &processes[i].arrival_time, &processes[i].burst_time);
     }
 
     // Calculate waiting and turnaround times
-    calculate_times(processes, n);
+    calculateTimes(processes, n);
 
-    // Display results
-    print_table(processes, n);
+    return 0;
+}
+output 
+Enter the number of processes: 3
+Enter arrival time and burst time for Process P1: 0 5
+Enter arrival time and burst time for Process P2: 2 3
+Enter arrival time and burst time for Process P3: 4 2
 
-    return 0
+Process Arrival Time    Burst Time   Waiting Time    Turnaround Time
+P1         0            5            0              5
+P2         2            3            3              6
+P3         4            2            4              6
 
+Average Waiting Time: 2.33
+Average Turnaround Time: 5.67
 
-2>
+2>fibonacci series
 #!/bin/bash
 
-# Function to calculate factorial
-factorial() {
-    local num=$1
-    local fact=1
+echo "Enter the number of terms: "
+read n
 
-    # Loop to calculate factorial
-    for ((i=1; i<=num; i++))
-    do
-        fact=$((fact * i))
-    done
+a=0
+b=1
 
-    echo $fact
-}
+echo "The Fibonacci series up to $n terms is:"
 
-# Prompt user for input
-read -p "Enter a number: " number
+for (( i=0; i<n; i++ ))
+do
+    echo -n "$a "
+    next=$((a + b))
+    a=$b
+    b=$next
+done
 
-# Check if the input is a non-negative integer
-if [[ $number =~ ^[0-9]+$ ]]; then
-    result=$(factorial $number)
-    echo "Factorial of $number is: $result"
-else
-    echo "Please enter a non-negative integer."
-fi
+echo
