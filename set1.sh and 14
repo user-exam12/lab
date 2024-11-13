@@ -1,3 +1,4 @@
+1>
 #include <iostream>
 #include <unistd.h>
 using namespace std;
@@ -24,3 +25,48 @@ int main() {
 
     return 0;
 }
+
+2>write a program for switch case to input the bank account information of 3 person using shell programming
+#!/bin/bash
+
+# Function to input account information
+input_account_info() {
+    echo "Enter account holder's name:"
+    read name
+    echo "Enter account number:"
+    read account_number
+    echo "Enter bank name:"
+    read bank_name
+    echo "Enter balance:"
+    read balance
+
+    # Display the entered details
+    echo "Account Holder: $name"
+    echo "Account Number: $account_number"
+    echo "Bank Name: $bank_name"
+    echo "Balance: $balance"
+}
+
+echo "Select the account number to enter details:"
+echo "1. Person 1"
+echo "2. Person 2"
+echo "3. Person 3"
+read choice
+
+case $choice in
+    1)
+        echo "Entering details for Person 1"
+        input_account_info
+        ;;
+    2)
+        echo "Entering details for Person 2"
+        input_account_info
+        ;;
+    3)
+        echo "Entering details for Person 3"
+        input_account_info
+        ;;
+    *)
+        echo "Invalid choice. Please enter a number between 1 and 3."
+        ;;
+esac
