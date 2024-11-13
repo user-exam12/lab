@@ -1,4 +1,4 @@
-#1
+1< wap to find out the largest no from 3 nos. using shell script
 # Function to find the greatest number
 find_greatest() {
     num1=$1
