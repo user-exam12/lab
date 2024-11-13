@@ -34,29 +34,19 @@ int main() {
     printf("All threads have finished execution.\n");
     return 0;
 }
-2>
+2>factorial
 #!/bin/bash
 
-# Function to calculate factorial
-factorial() {
-    local num=$1
-    local fact=1
+echo "Enter a number:"
+read num
 
-    # Loop to calculate factorial
-    for ((i=1; i<=num; i++)); do
-        fact=$((fact * i))
-    done
+factorial=1
+counter=1
 
-    echo $fact
-}
+while [ $counter -le $num ]
+do
+    factorial=$((factorial * counter))
+    counter=$((counter + 1))
+done
 
-# Prompt user for input
-read -p "Enter a number: " number
-
-# Check if the input is a non-negative integer
-if [[ $number =~ ^[0-9]+$ ]]; then
-    result=$(factorial $number)
-    echo "Factorial of $number is: $result"
-else
-    echo "Please enter a non-negative integer."
-fi
+echo "The factorial of $num is $factorial"
