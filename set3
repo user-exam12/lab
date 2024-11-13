@@ -10,4 +10,91 @@ do
 done
 
 2>command line argument 
+#!/bin/bash
+
+# Check if SQLite is installed
+if ! command -v sqlite3 &> /dev/null
+then
+    echo "Error: sqlite3 is not installed. Please install it and try again."
+    exit 1
+fi
+
+# Database file name
+DB_FILE="sample_database.db"
+
+# Create a table if it doesn't exist
+initialize_db() {
+    sqlite3 $DB_FILE "CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE
+    );"
+}
+
+# Add a new user
+add_user() {
+    local name=$1
+    local email=$2
+    sqlite3 $DB_FILE "INSERT INTO users (name, email) VALUES ('$name', '$email');"
+    echo "User added: $name ($email)"
+}
+
+# Update a user by ID
+update_user() {
+    local id=$1
+    local name=$2
+    local email=$3
+    sqlite3 $DB_FILE "UPDATE users SET name='$name', email='$email' WHERE id=$id;"
+    echo "User with ID $id updated."
+}
+
+# Delete a user by ID
+delete_user() {
+    local id=$1
+    sqlite3 $DB_FILE "DELETE FROM users WHERE id=$id;"
+    echo "User with ID $id deleted."
+}
+
+# List all users
+list_users() {
+    echo "Listing all users:"
+    sqlite3 $DB_FILE "SELECT * FROM users;"
+}
+
+# Main script logic
+case $1 in
+    init)
+        initialize_db
+        echo "Database initialized."
+        ;;
+    add)
+        if [ -z "$2" ] || [ -z "$3" ]; then
+            echo "Usage: $0 add <name> <email>"
+            exit 1
+        fi
+        add_user "$2" "$3"
+        ;;
+    update)
+        if [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ]; then
+            echo "Usage: $0 update <id> <name> <email>"
+            exit 1
+        fi
+        update_user "$2" "$3" "$4"
+        ;;
+    delete)
+        if [ -z "$2" ]; then
+            echo "Usage: $0 delete <id>"
+            exit 1
+        fi
+        delete_user "$2"
+        ;;
+    list)
+        list_users
+        ;;
+    *)
+        echo "Usage: $0 {init|add|update|delete|list}"
+        exit 1
+        ;;
+esac
+
 
