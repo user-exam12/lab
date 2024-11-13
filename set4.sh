@@ -77,3 +77,19 @@ case $choice in
         echo "Invalid choice. Please select a valid option."
         ;;
 esac
+3> factorial 
+#!/bin/bash
+
+echo "Enter a number:"
+read num
+
+factorial=1
+counter=1
+
+while [ $counter -le $num ]
+do
+    factorial=$((factorial * counter))
+    counter=$((counter + 1))
+done
+
+echo "The factorial of $num is $factorial"
